@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Acme Studio — Single File Site</title>
+  <meta name="description" content="Single-file static demo site (Home / About / Services)" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --maxW:1100px;
+      --accent:#3b82f6;
+      --muted:#6b7280;
+      --bg:#f8fafc;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;line-height:1.5;color:#0f172a;background:var(--bg)}
+    .container{max-width:var(--maxW);margin:0 auto;padding:2rem}
+    .header-inner{display:flex;align-items:center;gap:1rem;justify-content:space-between}
+    .brand{font-weight:700;text-decoration:none;color:#0f172a}
+    .brand span{color:var(--accent)}
+    .nav{display:flex;gap:1rem}
+    .nav-link{text-decoration:none;color:var(--muted);padding:.3rem .5rem;border-radius:6px;cursor:pointer}
+    .nav-link.active{color:#0f172a;font-weight:600}
+    .btn{border:1px solid #e6edf3;padding:.55rem .9rem;border-radius:8px;background:white;cursor:pointer}
+    .btn-primary{background:var(--accent);color:white;border-color:transparent}
+    .btn-secondary{background:#111827;color:white;border-color:transparent}
+    .btn-ghost{background:transparent;border:1px solid rgba(15,23,42,.06)}
+    .btn-outline{background:transparent;border:1px solid #d1d5db}
+    .nav-toggle{display:none;background:transparent;border:0;font-size:1.2rem}
+    .site-header{background:white;box-shadow:0 1px 4px rgba(2,6,23,.06);position:sticky;top:0;z-index:40}
+    .hero{padding:4rem 0}
+    .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+    .hero-copy h1{font-size:2rem;margin:0 0 .5rem}
+    .hero-copy p{color:var(--muted);margin:0 0 1rem}
+    .hero-media img{width:100%;border-radius:10px;display:block}
+    .section-title{font-size:1.4rem;margin-bottom:1rem}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+    .card{background:white;padding:1.2rem;border-radius:10px;box-shadow:0 4px 12px rgba(2,6,23,.03)}
+    .muted{color:var(--muted)}
+    .gallery img{width:100%;height:200px;object-fit:cover;border-radius:8px}
+    .gallery-item figcaption{text-align:center;padding-top:.5rem;color:var(--muted)}
+    .testimonial{background:white;padding:1rem;border-radius:8px}
+    .testimonial cite{display:block;margin-top:.8rem;color:var(--muted);font-size:.95rem}
+    .contact-form{background:white;padding:1rem;border-radius:8px}
+    .form-row{display:flex;gap:1rem}
+    .form-row input{flex:1;padding:.6rem;border:1px solid #e6edf3;border-radius:8px}
+    textarea{width:100%;padding:.6rem;border-radius:8px;border:1px solid #e6edf3}
+    .site-footer{padding:1.2rem 0;margin-top:2rem;background:transparent}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+    .socials a{margin-left:1rem;color:var(--muted);text-decoration:none}
+    .card img{width:100%;height:180px;object-fit:cover;border-radius:8px}
+    .values-list{list-style:disc;padding-left:1.2rem}
+    .pricing-card{background:white;padding:1rem;border-radius:10px;text-align:center}
+    .pricing-card.popular{box-shadow:0 6px 24px rgba(59,130,246,.12);transform:scale(1.02)}
+    .price{font-size:1.4rem;margin:0.5rem 0}
+    @media (max-width:900px){
+      .grid-3{grid-template-columns:1fr}
+      .grid-2{grid-template-columns:1fr}
+      .hero-grid{grid-template-columns:1fr}
+      .nav{display:none}
+      .nav-toggle{display:block}
+    }
+    /* --- single-file 'pages' behavior --- */
+    .page{display:none;padding:2rem 0}
+    .page.active{display:block}
+    /* small utilities */
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#home" class="brand" data-link>Acme <span>Studio</span></a>
+      <nav class="nav" role="navigation" aria-label="main navigation">
+        <a class="nav-link" data-link href="#home">Home</a>
+        <a class="nav-link" data-link href="#about">About</a>
+        <a class="nav-link" data-link href="#services">Services</a>
+      </nav>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <button class="btn btn-primary" onclick="navigateTo('#contact')">Contact</button>
+        <button class="nav-toggle" aria-label="open menu" onclick="toggleNav()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="page active" aria-labelledby="home-title">
+      <div class="hero container">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <h1 id="home-title">Build beautiful web experiences</h1>
+            <p>We design and develop delightful digital products — fast, accessible, and responsive.</p>
+            <div class="hero-ctas" style="display:flex;gap:.5rem;margin-top:1rem">
+              <a class="btn btn-secondary" href="#services" data-link>Our Services</a>
+              <a class="btn btn-ghost" href="#portfolio" data-link>View Portfolio</a>
+            </div>
+          </div>
+          <div class="hero-media">
+            <img src="https://images.unsplash.com/photo-1526378724129-6b2d0f8b9e95?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=abcdef" alt="work desk">
+          </div>
+        </div>
+      </div>
+
+      <section id="features" class="container features">
+        <h2 class="section-title">What we do</h2>
+        <div class="grid-3">
+          <article class="card"><h3>Web Development</h3><p>Responsive, fast and accessible websites using modern technologies.</p></article>
+          <article class="card"><h3>UI / UX Design</h3><p>User-centered design that increases engagement and conversions.</p></article>
+          <article class="card"><h3>Consulting</h3><p>Technical strategy, audits and performance optimization.</p></article>
+        </div>
+      </section>
+
+      <section id="portfolio" class="container portfolio">
+        <h2 class="section-title">Portfolio</h2>
+        <p class="muted">A few selected static projects we've built.</p>
+        <div class="grid-3 gallery">
+          <figure class="gallery-item"><img src="https://picsum.photos/seed/p1/600/400" alt="project 1"><figcaption>Static Blog Theme</figcaption></figure>
+          <figure class="gallery-item"><img src="https://picsum.photos/seed/p2/600/400" alt="project 2"><figcaption>Documentation Site</figcaption></figure>
+          <figure class="gallery-item"><img src="https://picsum.photos/seed/p3/600/400" alt="project 3"><figcaption>Marketing Landing Page</figcaption></figure>
+        </div>
+      </section>
+
+      <section id="testimonials" class="container testimonials">
+        <h2 class="section-title">Testimonials</h2>
+        <div class="grid-2">
+          <blockquote class="testimonial"><p>"Acme Studio helped us redesign our product. Conversions went up 34% in two months."</p><cite>— Priya Sharma, CEO, BrightCo</cite></blockquote>
+          <blockquote class="testimonial"><p>"Fast, professional and easy to work with — delivered on time and on budget."</p><cite>— Rohit Verma, Founder, Shopwise</cite></blockquote>
+        </div>
+      </section>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="page" aria-labelledby="about-title">
+      <div class="container about-hero">
+        <h1 id="about-title">About Acme Studio</h1>
+        <p class="muted">We are a small team focused on creating meaningful digital experiences. We love clean code, good design, and shipping fast.</p>
+      </div>
+
+      <section class="container team">
+        <h2 class="section-title">Our Team</h2>
+        <div class="grid-3">
+          <div class="card"><img src="https://i.pravatar.cc/200?img=7" alt="team member"><h4>Aisha Khan</h4><p>Lead Designer</p></div>
+          <div class="card"><img src="https://i.pravatar.cc/200?img=12" alt="team member"><h4>Vikram Joshi</h4><p>Frontend Engineer</p></div>
+          <div class="card"><img src="https://i.pravatar.cc/200?img=5" alt="team member"><h4>Neha Patel</h4><p>Backend Engineer</p></div>
+        </div>
+      </section>
+
+      <section class="container values">
+        <h2 class="section-title">Our Values</h2>
+        <ul class="values-list">
+          <li>Clarity — We favour simple solutions.</li>
+          <li>Craft — We care about details.</li>
+          <li>Speed — Ship early, iterate often.</li>
+        </ul>
+      </section>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="page" aria-labelledby="services-title">
+      <div class="container services-hero">
+        <h1 id="services-title">Services we offer</h1>
+        <p class="muted">From static websites to full-stack apps — we cover it all.</p>
+      </div>
+
+      <section class="container services-list">
+        <div class="grid-3">
+          <article class="card"><h3>Static Websites</h3><p>Fast, SEO-friendly static websites — ideal for landing pages and documentation.</p></article>
+          <article class="card"><h3>Single Page Apps</h3><p>React / Vue powered single page applications for smooth UX.</p></article>
+          <article class="card"><h3>Backend APIs</h3><p>Node.js / Express REST APIs and serverless functions.</p></article>
+        </div>
+      </section>
+
+      <section class="container pricing">
+        <h2 class="section-title">Simple Pricing</h2>
+        <div class="grid-3">
+          <div class="pricing-card"><h4>Starter</h4><p class="price">₹5,000</p><ul><li>1 static page</li><li>Basic SEO</li><li>Email support</li></ul><button class="btn">Choose</button></div>
+          <div class="pricing-card popular"><h4>Pro</h4><p class="price">₹15,000</p><ul><li>Up to 5 pages</li><li>Responsive design</li><li>2 months support</li></ul><button class="btn btn-primary">Choose</button></div>
+          <div class="pricing-card"><h4>Enterprise</h4><p class="price">Custom</p><ul><li>Custom requirements</li><li>Dedicated support</li></ul><button class="btn">Contact</button></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- CONTACT (a separate section but reachable via hash) -->
+    <section id="contact" class="page" aria-labelledby="contact-title">
+      <div class="container">
+        <h1 id="contact-title">Get in touch</h1>
+        <p class="muted">This is a static demo form — it won't actually send messages, but it shows structure.</p>
+        <form class="contact-form" onsubmit="fakeSubmit(event)">
+          <div class="form-row">
+            <input type="text" name="name" placeholder="Your name" required>
+            <input type="email" name="email" placeholder="Your email" required>
+          </div>
+          <textarea name="message" rows="5" placeholder="Your message" required></textarea>
+          <div class="form-row" style="margin-top:.6rem">
+            <button class="btn btn-primary" type="submit">Send Message</button>
+            <button class="btn btn-outline" type="reset">Reset</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> Acme Studio — All rights reserved.</p>
+      <div class="socials">
+        <a href="#" aria-label="twitter">Twitter</a>
+        <a href="#" aria-label="linkedin">LinkedIn</a>
+        <a href="#" aria-label="github">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // helper: show a page (section) by id and update nav active state
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const el = document.getElementById(id.replace('#',''));
+      if(el) el.classList.add('active');
+      // update nav links
+      document.querySelectorAll('.nav-link').forEach(a => {
+        const href = a.getAttribute('href') || a.dataset.href || '';
+        a.classList.toggle('active', href === id);
+      });
+      // close nav on small screens
+      const nav = document.querySelector('.nav');
+      if(window.innerWidth <= 900 && nav) nav.style.display = 'none';
+      // scroll to top of page
+      window.scrollTo({top:0,behavior:'instant'});
+    }
+
+    // navigation handling using hash
+    function navigateTo(hash) {
+      location.hash = hash;
+    }
+
+    // on load, set page based on hash
+    function handleRouting() {
+      const hash = location.hash || '#home';
+      const page = (hash.split('?')[0]).replace('#','');
+      // valid pages: home, about, services, contact
+      const allowed = ['home','about','services','contact'];
+      if(!allowed.includes(page)) {
+        location.hash = '#home';
+        return;
+      }
+      showPage('#' + page);
+    }
+
+    // wire links with data-link attribute to use push navigation (keeps hash)
+    document.querySelectorAll('[data-link]').forEach(el => {
+      el.addEventListener('click', function(e){
+        // allow normal anchor behavior when it's a true external link
+        const href = el.getAttribute('href') || '#home';
+        if(href.startsWith('#')) {
+          e.preventDefault();
+          navigateTo(href);
+        }
+      });
+    });
+
+    // toggle nav on small screens
+    function toggleNav(){
+      const nav = document.querySelector('.nav');
+      if(!nav) return;
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+      nav.style.flexDirection = 'column';
+      nav.style.background = 'white';
+      nav.style.padding = '1rem';
+      nav.style.position = 'absolute';
+      nav.style.right = '1rem';
+      nav.style.top = '64px';
+      nav.style.borderRadius = '8px';
+      nav.style.boxShadow = '0 8px 32px rgba(2,6,23,.08)';
+    }
+    // fake submit for demo
+    function fakeSubmit(e){
+      e.preventDefault();
+      const form = e.target;
+      const name = form.name.value.trim();
+      alert('Thanks, ' + (name || 'there') + '! (This is a static demo — no message was sent.)');
+      form.reset();
+      // navigate back to home
+      navigateTo('#home');
+    }
+
+    // Listen to hash changes
+    window.addEventListener('hashchange', handleRouting, false);
+
+    // initial route
+    handleRouting();
+
+    // small accessibility: allow nav via keyboard Enter
+    document.querySelectorAll('.nav-link').forEach(n => {
+      n.addEventListener('keydown', ev => {
+        if(ev.key === 'Enter') n.click();
+      });
+    });
+  </script>
+</body>
+</html>
